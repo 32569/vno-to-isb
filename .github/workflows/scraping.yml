@@ -2,14 +2,14 @@ name: Daily Flight Scraper
 
 on:
   schedule:
-    - cron: "0 2 * * *"           # kasdien 02:00 UTC
-  workflow_dispatch:              # leidžia paleisti rankiniu būdu
+    - cron: "0 2 * * *"        # kasdien 02:00 UTC
+  workflow_dispatch:           # mygtukas „Run workflow“
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write          # kad galėtų „commitinti“ CSV
     steps:
       - uses: actions/checkout@v4
 
@@ -26,14 +26,13 @@ jobs:
       - name: Run scraper
         run: python scraper/flights.py
 
-      # 👉 naujas žingsnis – prisegame ekrano nuotrauką (jei tokia yra)
       - name: Upload screenshot
-        if: always()
+        if: always()           # bandome visada
         uses: actions/upload-artifact@v4
         with:
           name: flight-screenshot
-          path: scraper/screenshot.png    # kelias tas pats kaip SS_PATH
-          if-no-files-found: error        # norim klaidos, jei png neatsirado
+          path: scraper/screenshot.png
+          if-no-files-found: ignore
 
       - name: Commit updated CSV
         uses: EndBug/add-and-commit@v9
