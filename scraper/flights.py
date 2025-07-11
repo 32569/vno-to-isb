@@ -69,6 +69,8 @@ def scrape():
             page.screenshot(path="screenshot.png", full_page=True)
         else:
             print(f"✅ Įrašau {len(offers)} pigiausius pasiūlymus į CSV.")
+            page.screenshot(path="scraper/screenshot.png", full_page=True)
+
 
         browser.close()
 
