@@ -2,8 +2,8 @@ name: Daily Flight Scraper
 
 on:
   schedule:
-    - cron: "0 2 * * *"
-  workflow_dispatch:
+    - cron: "0 2 * * *"           # kasdien 02:00 UTC
+  workflow_dispatch:              # leidžia paleisti rankiniu būdu
 
 jobs:
   scrape:
@@ -25,6 +25,15 @@ jobs:
 
       - name: Run scraper
         run: python scraper/flights.py
+
+      # 👉 naujas žingsnis – prisegame ekrano nuotrauką (jei tokia yra)
+      - name: Upload screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flight-screenshot
+          path: scraper/screenshot.png
+          if-no-files-found: ignore     # neskelbk klaidos, jei failo nėra
 
       - name: Commit updated CSV
         uses: EndBug/add-and-commit@v9
