@@ -32,8 +32,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flight-screenshot
-          path: scraper/screenshot.png
-          if-no-files-found: ignore     # neskelbk klaidos, jei failo nėra
+          path: scraper/screenshot.png    # kelias tas pats kaip SS_PATH
+          if-no-files-found: error        # norim klaidos, jei png neatsirado
 
       - name: Commit updated CSV
         uses: EndBug/add-and-commit@v9
