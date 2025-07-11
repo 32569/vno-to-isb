@@ -1,0 +1,33 @@
+name: Daily Flight Scraper
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run scraper
+        run: python scraper/flights.py
+
+      - name: Commit updated CSV
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Daily flight data update"
+          add: "data/flights.csv"
